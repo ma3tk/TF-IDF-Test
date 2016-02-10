@@ -41,3 +41,6 @@ go get "github.com/djimenez/iconv-go"
 ```
 go run app/tf_idf.go
 ```
+
+## Sample 
+see: https://github.com/ma3tk/TF-IDF-Test/blob/master/data/sample_output.csv

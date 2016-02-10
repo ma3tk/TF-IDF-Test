@@ -122,6 +122,15 @@ func (i *IDF) GetIDFList() map[string]map[string]float64 {
 func (i *IDF) SetIDFList(value map[string]map[string]float64) {
 	i.IDFList = value
 }
+func (i *IDF) GetIDFListByKey(key string) map[string]float64 {
+	_, exists := i.IDFList[key]
+
+	if !exists {
+		return map[string]float64{}
+	}
+
+	return i.IDFList[key]
+}
 
 func CreateIDF( allDoc map[string]string) *IDF {
 

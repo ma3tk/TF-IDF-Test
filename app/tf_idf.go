@@ -13,16 +13,17 @@ func main() {
 	keys := []string{"doc1", "doc2", "doc3", "doc4"}
 
 	for _, key := range keys {
+		// TFIDF
+		tfidfResult := getTFIDFResult(key, data)
+		output(key, "TFIDF", tfidfResult)
 
-		result := getResult(key, data)
+		// TF
+		tfResult := getTFResult(key, data)
+		output(key, "TF", tfResult)
 
-		// 出力
-		fmt.Println(key , "========================")
-		for _, val := range result {
-			fmt.Println(val.GetName(), ",", val.GetValue())
-		}
-		fmt.Println("")
-
+		// IDF
+		idfResult := getIDFResult(key, data)
+		output(key, "IDF", idfResult)
 	}
 }
 
@@ -37,14 +38,53 @@ func createData() map[string]string {
 	return data
 }
 
+func output(key string, typeName string, result utils.ListFloat) {
+	// 出力
+	fmt.Println(key, ",", typeName, "========================")
+
+	for _, val := range result {
+		fmt.Println(val.GetName(), ",", val.GetValue())
+	}
+
+	fmt.Println("")
+}
 
 
-func getResult(key string, data map[string]string) utils.ListFloat {
+
+func getTFIDFResult(key string, data map[string]string) utils.ListFloat {
 	tfidf := models.CreateTFIDF(
 		data[key],
 		data,
 		key,
 	)
 
-	return utils.MorphNounSortFloat(tfidf.GetTFIDFList())
+	return utils.MorphNounSortFloat(
+		tfidf.GetTFIDFList(),
+	)
 }
+
+func getTFResult(key string, data map[string]string) utils.ListFloat {
+	tfidf := models.CreateTFIDF(
+		data[key],
+		data,
+		key,
+	)
+
+	return utils.MorphNounSortFloat(
+		tfidf.GetTF().GetTFList(),
+	)
+}
+
+func getIDFResult(key string, data map[string]string) utils.ListFloat {
+	tfidf := models.CreateTFIDF(
+		data[key],
+		data,
+		key,
+	)
+
+	return utils.MorphNounSortFloat(
+		tfidf.GetIDF().GetIDFListByKey(key),
+	)
+}
+
+
